@@ -28,18 +28,21 @@ const exactTemplates = [
   "IT'S {INTENSIFIER} {HOUR} {MINUTE} ON THE DOT",
 ];
 
-const pastToMap = {
-  5: "FIVE",
-  10: "TEN",
-  15: "QUARTER",
-  20: "TWENTY",
-  25: "TWENTY-FIVE",
-  30: "HALF",
-  35: "TWENTY-FIVE",
-  40: "TWENTY",
-  45: "QUARTER",
-  50: "TEN",
-  55: "FIVE",
+const spokenMinutePhrase = (minute) => {
+  const mapping = {
+    5: { phrase: "FIVE", direction: "PAST" },
+    10: { phrase: "TEN", direction: "PAST" },
+    15: { phrase: "QUARTER", direction: "PAST" },
+    20: { phrase: "TWENTY", direction: "PAST" },
+    25: { phrase: "TWENTY-FIVE", direction: "PAST" },
+    30: { phrase: "HALF", direction: "PAST" },
+    35: { phrase: "TWENTY-FIVE", direction: "TO" },
+    40: { phrase: "TWENTY", direction: "TO" },
+    45: { phrase: "QUARTER", direction: "TO" },
+    50: { phrase: "TEN", direction: "TO" },
+    55: { phrase: "FIVE", direction: "TO" },
+  };
+  return mapping[minute] || null;
 };
 
 const dayNames = [
@@ -108,6 +111,8 @@ const formatDateLine = (date) => {
   return `${dayName} ${dayOrdinal} ${monthName}`;
 };
 
+const hour12 = (hour) => (hour % 12 === 0 ? 12 : hour % 12);
+
 const hourToWords = (hour, minute, rand) => {
   if (hour === 0 && minute === 0 && rand() < 0.4) {
     return "MIDNIGHT";
@@ -115,8 +120,7 @@ const hourToWords = (hour, minute, rand) => {
   if (hour === 12 && minute === 0 && rand() < 0.4) {
     return "NOON";
   }
-  const hour12 = hour % 12 === 0 ? 12 : hour % 12;
-  return numberToWords(hour12);
+  return numberToWords(hour12(hour));
 };
 
 const numberToWords = (number) => {
@@ -205,7 +209,7 @@ const buildExactPhrase = (rand, hourWord, minute) => {
   return lines;
 };
 
-const buildPastToPhrase = (rand, hourWord, nextHourWord, minute) => {
+const buildPastToPhrase = (rand, hourWord, nextHourWord, spokenPhrase) => {
   const lines = [];
   const opener = pick(rand, openers);
   const intensifier = pick(rand, intensifiers);
@@ -214,12 +218,11 @@ const buildPastToPhrase = (rand, hourWord, nextHourWord, minute) => {
     .map((word) => neutralToken(word));
   lines.push([...openerTokens, neutralToken(intensifier)]);
 
-  const minuteWord = pastToMap[minute];
-  const isTo = minute > 30;
-  const pastToWord = isTo ? "TO" : "PAST";
-  const hourTokenWord = isTo ? nextHourWord : hourWord;
+  const { phrase, direction } = spokenPhrase;
+  const pastToWord = direction;
+  const hourTokenWord = direction === "TO" ? nextHourWord : hourWord;
 
-  const minuteLines = splitHyphenated(minuteWord, "minute");
+  const minuteLines = splitHyphenated(phrase, "minute");
   minuteLines.forEach((line) => lines.push(line));
 
   const hourLineVariant = rand() < 0.4;
@@ -262,22 +265,15 @@ const buildTimeLines = (date) => {
   const rand = mulberry32(seedFromString(key));
 
   const hourWord = hourToWords(hour, minute, rand);
-  const nextHourWord = hourToWords((hour + 1) % 24, minute, rand);
+  const spokenHourWord = numberToWords(hour12(hour));
+  const spokenNextHourWord = numberToWords(hour12((hour + 1) % 24));
+  const spokenPhrase = spokenMinutePhrase(minute);
 
-  const pastToEligible = Object.keys(pastToMap).includes(String(minute));
-
-  const options = [];
-  if (minute === 0) options.push("oclock");
-  options.push("exact");
-  if (pastToEligible) options.push("pastto");
-
-  const mode = pick(rand, options);
-
-  if (mode === "oclock") {
+  if (minute === 0) {
     return buildOclockPhrase(rand, hourWord);
   }
-  if (mode === "pastto") {
-    return buildPastToPhrase(rand, hourWord, nextHourWord, minute);
+  if (spokenPhrase) {
+    return buildPastToPhrase(rand, spokenHourWord, spokenNextHourWord, spokenPhrase);
   }
 
   return buildExactPhrase(rand, hourWord, minute);
