@@ -3,6 +3,9 @@ const timeEl = document.getElementById("time");
 const fullscreenButton = document.getElementById("fullscreen-toggle");
 const awakeStatus = document.getElementById("awake-status");
 
+const nosleepVideoSource =
+  "data:video/mp4;base64,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";
+
 const intensifiers = [
   "FUCKING",
   "DAMN",
@@ -302,6 +305,7 @@ const renderLines = (lines) => {
 };
 
 let wakeLock = null;
+let fallbackVideo = null;
 
 const setAwakeStatus = (state) => {
   awakeStatus.textContent = `AWAKE: ${state}`;
@@ -314,7 +318,12 @@ const isWakeLockSupported = () =>
 
 const updateFullscreenButton = () => {
   const isFullscreen = Boolean(document.fullscreenElement);
-  fullscreenButton.textContent = isFullscreen ? "EXIT FULLSCREEN" : "GO FULLSCREEN";
+  fullscreenButton.textContent = isFullscreen ? "×" : "⤢";
+  fullscreenButton.classList.toggle("is-exit", isFullscreen);
+  fullscreenButton.setAttribute(
+    "aria-label",
+    isFullscreen ? "Exit fullscreen" : "Enter fullscreen"
+  );
 };
 
 const releaseWakeLock = async () => {
@@ -328,9 +337,50 @@ const releaseWakeLock = async () => {
   }
 };
 
+const ensureFallbackVideo = () => {
+  if (fallbackVideo) return fallbackVideo;
+  const video = document.createElement("video");
+  video.className = "nosleep-video";
+  video.setAttribute("playsinline", "");
+  video.setAttribute("webkit-playsinline", "");
+  video.setAttribute("muted", "");
+  video.muted = true;
+  video.loop = true;
+  video.src = nosleepVideoSource;
+  document.body.appendChild(video);
+  fallbackVideo = video;
+  return video;
+};
+
+const requestFallbackWakeLock = async () => {
+  const video = ensureFallbackVideo();
+  try {
+    await video.play();
+    setAwakeStatus("ON");
+    return true;
+  } catch (error) {
+    console.warn("Failed to play wake video:", error);
+    setAwakeStatus("OFF");
+    return false;
+  }
+};
+
+const releaseFallbackWakeLock = () => {
+  if (!fallbackVideo) return;
+  try {
+    fallbackVideo.pause();
+    fallbackVideo.currentTime = 0;
+  } catch (error) {
+    console.warn("Failed to stop wake video:", error);
+  }
+};
+
 const requestWakeLock = async () => {
   if (!isWakeLockSupported()) {
-    setAwakeStatus("UNSUPPORTED");
+    const fallbackActive = await requestFallbackWakeLock();
+    if (!fallbackActive) {
+      setAwakeStatus("UNSUPPORTED");
+    }
     return;
   }
   try {
@@ -338,8 +388,16 @@ const requestWakeLock = async () => {
     setAwakeStatus("ON");
   } catch (error) {
     console.warn("Failed to acquire wake lock:", error);
-    setAwakeStatus("OFF");
+    const fallbackActive = await requestFallbackWakeLock();
+    if (!fallbackActive) {
+      setAwakeStatus("OFF");
+    }
   }
+};
+
+const stopWakeLock = async () => {
+  await releaseWakeLock();
+  releaseFallbackWakeLock();
 };
 
 const updateDisplay = () => {
@@ -380,7 +438,7 @@ fullscreenButton.addEventListener("click", async () => {
     return;
   }
 
-  await releaseWakeLock();
+  await stopWakeLock();
   try {
     await document.exitFullscreen();
   } catch (error) {
@@ -398,7 +456,7 @@ document.addEventListener("visibilitychange", () => {
 
 document.addEventListener("fullscreenchange", () => {
   if (!document.fullscreenElement) {
-    releaseWakeLock();
+    stopWakeLock();
     setAwakeStatus("OFF");
   }
   updateFullscreenButton();

@@ -43,16 +43,17 @@ body {
 }
 
 .fullscreen-button {
-  border: 2px solid var(--text);
-  background: rgba(5, 4, 10, 0.85);
+  border: 1px solid rgba(247, 247, 255, 0.6);
+  background: rgba(5, 4, 10, 0.55);
   color: var(--text);
-  padding: 0.55rem 1.1rem;
+  padding: 0.25rem 0.45rem;
   font-family: "Holtwood One SC", "Georgia", serif;
-  font-size: clamp(0.6rem, 2.2vmin, 0.95rem);
-  letter-spacing: 0.12em;
+  font-size: clamp(0.55rem, 1.6vmin, 0.8rem);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .fullscreen-button:hover,
@@ -62,10 +63,26 @@ body {
   color: var(--minute-accent);
 }
 
+.fullscreen-button.is-exit {
+  font-size: clamp(0.7rem, 2.1vmin, 0.95rem);
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border-color: rgba(247, 247, 255, 0.75);
+}
+
 .awake-status {
   font-size: clamp(0.55rem, 1.9vmin, 0.85rem);
   letter-spacing: 0.18em;
   opacity: 0.75;
+}
+
+.nosleep-video {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .poster {
