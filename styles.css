@@ -25,7 +25,7 @@ body {
     ),
     linear-gradient(155deg, var(--bg), var(--bg-accent));
   color: var(--text);
-  font-family: "Montserrat", "Arial Black", sans-serif;
+  font-family: "Holtwood One SC", "Georgia", serif;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -36,26 +36,26 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: clamp(1.5rem, 4vw, 4rem);
-  gap: clamp(1.5rem, 3vh, 3rem);
+  padding: clamp(0.75rem, 2.5vw, 2.5rem);
+  gap: clamp(0.9rem, 2.5vh, 2.4rem);
   text-align: center;
 }
 
 .date {
-  font-size: clamp(0.75rem, 1.6vw, 1.25rem);
+  font-size: clamp(0.65rem, 1.4vw, 1.1rem);
   font-weight: 600;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.28em;
   opacity: 0.85;
 }
 
 .time {
-  font-family: "Anton", "Montserrat", "Arial Black", sans-serif;
-  font-size: clamp(3.4rem, 9vw, 8.5rem);
-  font-weight: 900;
+  font-family: "Holtwood One SC", "Georgia", serif;
+  font-size: clamp(4.2rem, 12vw, 12rem);
+  font-weight: 700;
   line-height: 0.9;
   transform: skew(-10deg);
   transition: opacity 0.2s ease-in-out;
-  max-width: min(92vw, 960px);
+  max-width: min(94vw, 1100px);
   text-shadow: 0 0 24px rgba(91, 213, 255, 0.25);
 }
 
@@ -65,8 +65,8 @@ body {
 }
 
 .time-line--lead {
-  font-size: 0.52em;
-  letter-spacing: 0.28em;
+  font-size: 0.62em;
+  letter-spacing: 0.22em;
 }
 
 .time-token {
@@ -75,6 +75,7 @@ body {
 }
 
 .t-hour {
+  font-family: "Honk", "Holtwood One SC", serif;
   color: var(--hour-accent);
   text-shadow: 0 0 28px rgba(91, 255, 138, 0.35);
 }
