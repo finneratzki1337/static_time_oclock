@@ -98,6 +98,15 @@ const seedFromString = (value) => {
 
 const pick = (rand, list) => list[Math.floor(rand() * list.length)];
 
+const animationClasses = [
+  "anim-flicker",
+  "anim-split-lines",
+  "anim-sling-lines",
+  "anim-zoom-in",
+  "anim-zoom-out",
+  "anim-explode",
+];
+
 const formatOrdinal = (day) => {
   if ([11, 12, 13].includes(day % 100)) {
     return `${day}th`;
@@ -304,6 +313,21 @@ const renderLines = (lines) => {
   });
 };
 
+const pickAnimationClass = (key) => {
+  const rand = mulberry32(seedFromString(`${key}-anim`));
+  return pick(rand, animationClasses);
+};
+
+const resetAnimations = () => {
+  timeEl.classList.remove("fade-out", ...animationClasses);
+};
+
+const applyAnimation = (className) => {
+  resetAnimations();
+  void timeEl.offsetWidth;
+  timeEl.classList.add(className);
+};
+
 let wakeLock = null;
 let fallbackVideo = null;
 
@@ -404,10 +428,13 @@ const updateDisplay = () => {
   const now = new Date();
   dateEl.textContent = formatDateLine(now);
   const lines = buildTimeLines(now);
+  const minuteKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}`;
+  const animationClass = pickAnimationClass(minuteKey);
   timeEl.classList.add("fade-out");
   setTimeout(() => {
     renderLines(lines);
     timeEl.classList.remove("fade-out");
+    applyAnimation(animationClass);
   }, 160);
 };
 
