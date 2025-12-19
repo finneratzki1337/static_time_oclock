@@ -1,8 +1,9 @@
 :root {
-  --bg: #000;
-  --text: #f5f5f5;
-  --hour-accent: #63ff7b;
-  --minute-accent: #6ecbff;
+  --bg: #05040a;
+  --bg-accent: #0b0d1e;
+  --text: #f7f7ff;
+  --hour-accent: #5bff8a;
+  --minute-accent: #5bd5ff;
 }
 
 * {
@@ -12,7 +13,17 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background: radial-gradient(
+      circle at top left,
+      rgba(91, 213, 255, 0.18),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(91, 255, 138, 0.18),
+      transparent 48%
+    ),
+    linear-gradient(155deg, var(--bg), var(--bg-accent));
   color: var(--text);
   font-family: "Montserrat", "Arial Black", sans-serif;
   letter-spacing: 0.04em;
@@ -31,23 +42,31 @@ body {
 }
 
 .date {
-  font-size: clamp(0.85rem, 2vw, 1.5rem);
-  font-weight: 700;
-  opacity: 0.9;
+  font-size: clamp(0.75rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  opacity: 0.85;
 }
 
 .time {
-  font-size: clamp(2.5rem, 7vw, 6rem);
-  font-weight: 800;
-  line-height: 0.95;
-  transform: skew(-8deg);
+  font-family: "Anton", "Montserrat", "Arial Black", sans-serif;
+  font-size: clamp(3.4rem, 9vw, 8.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  transform: skew(-10deg);
   transition: opacity 0.2s ease-in-out;
   max-width: min(92vw, 960px);
+  text-shadow: 0 0 24px rgba(91, 213, 255, 0.25);
 }
 
 .time-line {
   display: block;
   margin: 0.15em 0;
+}
+
+.time-line--lead {
+  font-size: 0.52em;
+  letter-spacing: 0.28em;
 }
 
 .time-token {
@@ -57,10 +76,12 @@ body {
 
 .t-hour {
   color: var(--hour-accent);
+  text-shadow: 0 0 28px rgba(91, 255, 138, 0.35);
 }
 
 .t-minute {
   color: var(--minute-accent);
+  text-shadow: 0 0 28px rgba(91, 213, 255, 0.35);
 }
 
 .fade-out {
@@ -69,6 +90,10 @@ body {
 
 @media (max-width: 480px) {
   .time {
-    transform: skew(-6deg);
+    transform: skew(-7deg);
+  }
+
+  .time-line--lead {
+    font-size: 0.58em;
   }
 }
