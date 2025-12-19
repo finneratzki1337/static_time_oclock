@@ -285,9 +285,12 @@ const buildTimeLines = (date) => {
 
 const renderLines = (lines) => {
   timeEl.innerHTML = "";
-  lines.forEach((line) => {
+  lines.forEach((line, index) => {
     const lineEl = document.createElement("div");
     lineEl.className = "time-line";
+    if (index === 0) {
+      lineEl.classList.add("time-line--lead");
+    }
     line.forEach((token) => {
       const span = document.createElement("span");
       span.className = "time-token";
