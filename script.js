@@ -1,5 +1,7 @@
 const dateEl = document.getElementById("date");
 const timeEl = document.getElementById("time");
+const fullscreenButton = document.getElementById("fullscreen-toggle");
+const awakeStatus = document.getElementById("awake-status");
 
 const intensifiers = [
   "FUCKING",
@@ -299,6 +301,47 @@ const renderLines = (lines) => {
   });
 };
 
+let wakeLock = null;
+
+const setAwakeStatus = (state) => {
+  awakeStatus.textContent = `AWAKE: ${state}`;
+};
+
+const isWakeLockSupported = () =>
+  "wakeLock" in navigator &&
+  navigator.wakeLock &&
+  typeof navigator.wakeLock.request === "function";
+
+const updateFullscreenButton = () => {
+  const isFullscreen = Boolean(document.fullscreenElement);
+  fullscreenButton.textContent = isFullscreen ? "EXIT FULLSCREEN" : "GO FULLSCREEN";
+};
+
+const releaseWakeLock = async () => {
+  if (!wakeLock) return;
+  try {
+    await wakeLock.release();
+  } catch (error) {
+    console.warn("Failed to release wake lock:", error);
+  } finally {
+    wakeLock = null;
+  }
+};
+
+const requestWakeLock = async () => {
+  if (!isWakeLockSupported()) {
+    setAwakeStatus("UNSUPPORTED");
+    return;
+  }
+  try {
+    wakeLock = await navigator.wakeLock.request("screen");
+    setAwakeStatus("ON");
+  } catch (error) {
+    console.warn("Failed to acquire wake lock:", error);
+    setAwakeStatus("OFF");
+  }
+};
+
 const updateDisplay = () => {
   const now = new Date();
   dateEl.textContent = formatDateLine(now);
@@ -322,3 +365,43 @@ const tick = () => {
 
 updateDisplay();
 setInterval(tick, 1000);
+
+fullscreenButton.addEventListener("click", async () => {
+  const isFullscreen = Boolean(document.fullscreenElement);
+  if (!isFullscreen) {
+    try {
+      await document.documentElement.requestFullscreen();
+    } catch (error) {
+      console.warn("Failed to enter fullscreen:", error);
+      return;
+    }
+    await requestWakeLock();
+    updateFullscreenButton();
+    return;
+  }
+
+  await releaseWakeLock();
+  try {
+    await document.exitFullscreen();
+  } catch (error) {
+    console.warn("Failed to exit fullscreen:", error);
+  }
+  setAwakeStatus("OFF");
+  updateFullscreenButton();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && document.fullscreenElement) {
+    requestWakeLock();
+  }
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement) {
+    releaseWakeLock();
+    setAwakeStatus("OFF");
+  }
+  updateFullscreenButton();
+});
+
+updateFullscreenButton();
