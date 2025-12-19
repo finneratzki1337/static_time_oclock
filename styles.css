@@ -1,0 +1,74 @@
+:root {
+  --bg: #000;
+  --text: #f5f5f5;
+  --hour-accent: #63ff7b;
+  --minute-accent: #6ecbff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Montserrat", "Arial Black", sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.poster {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  gap: clamp(1.5rem, 3vh, 3rem);
+  text-align: center;
+}
+
+.date {
+  font-size: clamp(0.85rem, 2vw, 1.5rem);
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.time {
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  transform: skew(-8deg);
+  transition: opacity 0.2s ease-in-out;
+  max-width: min(92vw, 960px);
+}
+
+.time-line {
+  display: block;
+  margin: 0.15em 0;
+}
+
+.time-token {
+  display: inline-block;
+  margin: 0 0.2em;
+}
+
+.t-hour {
+  color: var(--hour-accent);
+}
+
+.t-minute {
+  color: var(--minute-accent);
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+@media (max-width: 480px) {
+  .time {
+    transform: skew(-6deg);
+  }
+}
