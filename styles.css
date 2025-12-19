@@ -36,13 +36,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: clamp(0.75rem, 2.5vw, 2.5rem);
-  gap: clamp(0.9rem, 2.5vh, 2.4rem);
+  padding: clamp(0.85rem, 3vmin, 2.6rem);
+  gap: clamp(0.85rem, 2.6vmin, 2.4rem);
   text-align: center;
 }
 
 .date {
-  font-size: clamp(0.65rem, 1.4vw, 1.1rem);
+  font-size: clamp(0.6rem, 2.6vmin, 1.1rem);
   font-weight: 600;
   letter-spacing: 0.28em;
   opacity: 0.85;
@@ -50,7 +50,7 @@ body {
 
 .time {
   font-family: "Holtwood One SC", "Georgia", serif;
-  font-size: clamp(4.2rem, 12vw, 12rem);
+  font-size: clamp(2.6rem, 11vmin, 9.5rem);
   font-weight: 700;
   line-height: 0.9;
   transform: skew(-10deg);
