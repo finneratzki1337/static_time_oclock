@@ -76,9 +76,9 @@ body {
 }
 
 .t-hour {
-  font-family: "Honk", "Holtwood One SC", serif;
+  font-family: "Holtwood One SC", serif;
   color: var(--hour-accent);
-  font-size: 1.08em;
+  font-size: 1.2em;
   text-shadow: 0 0 28px rgba(91, 255, 138, 0.35);
 }
 
