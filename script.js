@@ -8,18 +8,20 @@ const nosleepVideoSource =
 
 const intensifiers = [
   "FUCKING",
+  "HELLA",
   "DAMN",
-  "GODDAMN",
-  "BLOODY",
   "WHOLE-ASS",
-  "ABSOLUTE",
-  "UNHOLY",
   "STUPID",
-  "RIDICULOUS",
-  "GLORIOUSLY STUPID",
+  "FREAKIN'",
+  "CRAZY",
+  "WILD",
+  "",
+  "",
+  "",
+  "",
 ];
 
-const openers = ["IT'S", "RIGHT NOW IT'S", "CONGRATS, IT'S", "WELCOME TO", "BEHOLD:"];
+const openers = ["IT'S", "RIGHT NOW IT'S", "CONGRATS, IT'S", "LOOKS LIKE IT'S", "IT IS", "CURRENTLY IT'S", "GUESS WHAT, IT'S", "HEY, IT'S", "SURPRISE, IT'S", "WOW, IT'S", "CHECK IT OUT, IT'S"];
 
 const oclockTemplates = [
   "IT'S {INTENSIFIER} {HOUR} O'CLOCK",
