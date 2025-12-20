@@ -75,6 +75,7 @@ body {
   font-size: clamp(0.55rem, 1.9vmin, 0.85rem);
   letter-spacing: 0.18em;
   opacity: 0.75;
+  display: none;
 }
 
 .nosleep-video {
